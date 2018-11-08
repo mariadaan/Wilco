@@ -16,3 +16,4 @@ for y in reversed(range(lengte + 1)):
         coordinaat = f"({x},{y})"
         print(coordinaat, end="")
     print()
+# Wilco
