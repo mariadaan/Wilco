@@ -71,12 +71,12 @@ class Amstelhaege():
 
             x = np.arange(0, 33)
             y = np.arange(0, 37)
-            x1 = np.arange(x_random, int(bre * 2))
-            y1 = np.arange(y_random, int(len * 2))
             x_mesh, y_mesh = np.meshgrid(x,y)
-            x1_mesh, y1_mesh = np.meshgrid(x1,y1)
-
             plt.scatter(x_mesh, y_mesh)
+
+            x1 = np.arange(x_random, (int(bre * 2) + x_random))
+            y1 = np.arange(y_random, (int(len * 2) + y_random))
+            x1_mesh, y1_mesh = np.meshgrid(x1,y1)
             plt.scatter(x1_mesh, y1_mesh)
 
             plt.show()
