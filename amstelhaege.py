@@ -6,11 +6,12 @@
 from woning import Woning
 import numpy as np
 import matplotlib.pyplot as plt
+import random as rd
 
 class Amstelhaege():
     def __init__(self):
         self.woningen = self.load_woningen("woningen.txt")
-        self.make_grid = self.make_grid()
+        # self.make_grid = self.make_grid()
 
     def load_woningen(self, filename):
         with open(filename, "r") as f:
@@ -36,17 +37,17 @@ class Amstelhaege():
                     itemnr += 1
         return woningen
 
-    def make_grid(self):
-
-        x = np.arange(0, 33)
-        y = np.arange(0, 37)
-        x1 = np.arange(8, 24)
-        y1 = np.arange(9, 27)
-        x_mesh, y_mesh = np.meshgrid(x,y)
-        x1_mesh, y1_mesh = np.meshgrid(x1,y1)
-
-        plt.scatter(x_mesh, y_mesh)
-        plt.scatter(x1_mesh, y1_mesh)
+    # def make_grid(self):
+    #
+    #     x = np.arange(0, 33)
+    #     y = np.arange(0, 37)
+    #     x1 = np.arange(8, 24)
+    #     y1 = np.arange(9, 27)
+    #     x_mesh, y_mesh = np.meshgrid(x,y)
+    #     x1_mesh, y1_mesh = np.meshgrid(x1,y1)
+    #
+    #     plt.scatter(x_mesh, y_mesh)
+    #     plt.scatter(x1_mesh, y1_mesh)
 
         # plt.show()
 
@@ -62,23 +63,29 @@ class Amstelhaege():
         len = woning.lengte
         bre = woning.breedte
 
-        x = np.arange(0, 33)
-        y = np.arange(0, 37)
-        x1 = np.arange(0, (len * 2))
-        y1 = np.arange(0, (bre * 2))
-        x_mesh, y_mesh = np.meshgrid(x,y)
-        x1_mesh, y1_mesh = np.meshgrid(x1,y1)
+        for i in range(10):
+            x_random = rd.randrange(33 - int(bre * 2))
+            y_random = rd.randrange(37 - int(len * 2))
 
-        plt.scatter(x_mesh, y_mesh)
-        plt.scatter(x1_mesh, y1_mesh)
+            print(x_random, y_random)
 
-        plt.show()
+            x = np.arange(0, 33)
+            y = np.arange(0, 37)
+            x1 = np.arange(x_random, int(bre * 2))
+            y1 = np.arange(y_random, int(len * 2))
+            x_mesh, y_mesh = np.meshgrid(x,y)
+            x1_mesh, y1_mesh = np.meshgrid(x1,y1)
+
+            plt.scatter(x_mesh, y_mesh)
+            plt.scatter(x1_mesh, y1_mesh)
+
+            plt.show()
 
 
 
 if __name__ == "__main__":
     amstelhaege = Amstelhaege()
-    amstelhaege.place(4)
+    amstelhaege.place(1)
 
 
 
