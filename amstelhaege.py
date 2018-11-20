@@ -82,8 +82,13 @@ class Amstelhaege():
 
         self.count += 1
 
+<<<<<<< HEAD
         if self.count < 13:
             self.place(id)
+=======
+        print(self.xcoordinaat_lijst)
+        print(self.ycoordinaat_lijst)
+>>>>>>> 4c219105dfbc32fdbfe80efbcde4b972bfb99332
 
 
 
@@ -94,8 +99,8 @@ class Amstelhaege():
 
     def check_place(self, id, x_random, y_random):
         woning = self.woningen[id - 1]
-        len = int(woning.lengte)
-        bre = int(woning.breedte)
+        len = int(woning.lengte) * 2
+        bre = int(woning.breedte) * 2
 
         # if len(self.xcoordinaat_lijst) > 0:
         for coordinate in self.xcoordinaat_lijst:
@@ -103,17 +108,21 @@ class Amstelhaege():
             for x in range(coordinate, (coordinate + len)):
                 if x == x_random:
                     self.place(id)
-            for x in range(coordinate, (coordinate - len)):
+                    return 0
+            for x in range((coordinate - len), coordinate):
                 if x == x_random:
                     self.place(id)
+                    return 0
         for coordinate in self.ycoordinaat_lijst:
             coordinate = int(coordinate)
             for y in range(coordinate, (coordinate + bre)):
                 if y == y_random:
                     self.place(id)
-            for y in range(coordinate, (coordinate - bre)):
+                    return 0
+            for y in range((coordinate - bre), coordinate):
                 if y == y_random:
                     self.place(id)
+                    return 0
 
         self.build_house(id, x_random, y_random)
 
@@ -130,8 +139,13 @@ class Amstelhaege():
         y_random = rd.randrange(GRID_BRE - int(bre * 2))
 
         self.check_place(id, x_random, y_random)
+        if self.count < 10:
+            self.place(id)
 
+<<<<<<< HEAD
         # print(self.xcoordinaat_lijst, self.ycoordinaat_lijst)
+=======
+>>>>>>> 4c219105dfbc32fdbfe80efbcde4b972bfb99332
 
 
 
