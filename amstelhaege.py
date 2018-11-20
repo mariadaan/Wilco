@@ -61,6 +61,9 @@ class Amstelhaege():
         bre = woning.breedte
         VRIJSTAND = woning.minvrijstand
 
+
+
+
         self.xcoordinaat_lijst.append(x_random)
         self.ycoordinaat_lijst.append(y_random)
 
@@ -79,8 +82,13 @@ class Amstelhaege():
 
         self.count += 1
 
-        if self.count < 5:
+        if self.count < 13:
             self.place(id)
+
+
+
+
+
 
 
 
@@ -123,7 +131,7 @@ class Amstelhaege():
 
         self.check_place(id, x_random, y_random)
 
-        print(self.xcoordinaat_lijst, self.ycoordinaat_lijst)
+        # print(self.xcoordinaat_lijst, self.ycoordinaat_lijst)
 
 
 
