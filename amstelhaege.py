@@ -15,6 +15,9 @@ class Amstelhaege():
     def __init__(self):
         self.woningen = self.load_woningen("woningen.txt")
         self.make_grid = self.make_grid()
+        self.count = 0
+        self.xcoordinaat_lijst = []
+        self.ycoordinaat_lijst = []
 
     def load_woningen(self, filename):
         with open(filename, "r") as f:
@@ -52,6 +55,59 @@ class Amstelhaege():
     #     villas_20 = 3
     #     combinatie_woningen = []
 
+    def build_house(self, id, x_random, y_random):
+        woning = self.woningen[id - 1]
+        len = woning.lengte
+        bre = woning.breedte
+        VRIJSTAND = woning.minvrijstand
+
+        self.xcoordinaat_lijst.append(x_random)
+        self.ycoordinaat_lijst.append(y_random)
+
+        x1 = np.arange(x_random, (int(bre * 2) + x_random))
+#            print(x1)
+        y1 = np.arange(y_random, (int(len * 2) + y_random))
+#            print(y1)
+
+        x2 = np.arange((x_random - VRIJSTAND), ((int(bre * 2) + x_random) + VRIJSTAND))
+        y2 = np.arange((y_random - VRIJSTAND), ((int(len * 2) + y_random) + VRIJSTAND))
+
+        x1_mesh, y1_mesh = np.meshgrid(x1,y1)
+        x2_mesh, y2_mesh = np.meshgrid(x2,y2)
+        plt.scatter(x2_mesh, y2_mesh)
+        plt.scatter(x1_mesh, y1_mesh)
+
+        self.count += 1
+
+        if self.count < 5:
+            self.place(id)
+
+
+
+    def check_place(self, id, x_random, y_random):
+        woning = self.woningen[id - 1]
+        len = int(woning.lengte)
+        bre = int(woning.breedte)
+
+        # if len(self.xcoordinaat_lijst) > 0:
+        for coordinate in self.xcoordinaat_lijst:
+            coordinate = int(coordinate)
+            for x in range(coordinate, (coordinate + len)):
+                if x == x_random:
+                    self.place(id)
+            for x in range(coordinate, (coordinate - len)):
+                if x == x_random:
+                    self.place(id)
+        for coordinate in self.ycoordinaat_lijst:
+            coordinate = int(coordinate)
+            for y in range(coordinate, (coordinate + bre)):
+                if y == y_random:
+                    self.place(id)
+            for y in range(coordinate, (coordinate - bre)):
+                if y == y_random:
+                    self.place(id)
+
+        self.build_house(id, x_random, y_random)
 
     def place(self, id):
         woning = self.woningen[id - 1]
@@ -65,30 +121,21 @@ class Amstelhaege():
         x_random = rd.randrange(GRID_LEN - int(len * 2))
         y_random = rd.randrange(GRID_BRE - int(bre * 2))
 
-        print(x_random, y_random)
+        self.check_place(id, x_random, y_random)
 
-        x1 = np.arange(x_random, (int(bre * 2) + x_random))
-        y1 = np.arange(y_random, (int(len * 2) + y_random))
-
-        x2 = np.arange((x_random - VRIJSTAND), ((int(bre * 2) + x_random) + VRIJSTAND))
-        y2 = np.arange((y_random - VRIJSTAND), ((int(len * 2) + y_random) + VRIJSTAND))
-
-        x1_mesh, y1_mesh = np.meshgrid(x1,y1)
-        x2_mesh, y2_mesh = np.meshgrid(x2,y2)
-        plt.scatter(x2_mesh, y2_mesh)
-        plt.scatter(x1_mesh, y1_mesh)
-
+        print(self.xcoordinaat_lijst, self.ycoordinaat_lijst)
 
 
 
 if __name__ == "__main__":
     amstelhaege = Amstelhaege()
-    for i in range(12):
-        amstelhaege.place(1)
-    for i in range(5):
-        amstelhaege.place(2)
-    for i in range(3):
-        amstelhaege.place(3)
+    # for i in range(12):
+    amstelhaege.place(1)
+   # for i in range(5):
+   #     amstelhaege.place(2)
+   # for i in range(3):
+   #     amstelhaege.place(3)
+
     plt.show()
 
 
