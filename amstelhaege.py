@@ -61,20 +61,12 @@ class Amstelhaege():
         woning = self.woningen[id - 1]
         len = woning.lengte
         bre = woning.breedte
-        vrij = woning.minvrijstand
+        vrij = woning.minvrijstand * 2
 
         self.xcoordinaat_lijst.append(x_random)
         self.ycoordinaat_lijst.append(y_random)
 
-        # if id == 1:
-        #     self.x1coordinaat_lijst.append(x_random)
-        #     self.y1coordinaat_lijst.append(y_random)
-        # elif id == 2:
-        #     self.x2coordinaat_lijst.append(x_random)
-        #     self.y2coordinaat_lijst.append(y_random)
-        # elif id == 3:
-        #     self.x3coordinaat_lijst.append(x_random)
-        #     self.y3coordinaat_lijst.append(y_random)
+
 
         x1 = np.arange(x_random, (int(bre * 2) + x_random))
         y1 = np.arange(y_random, (int(len * 2) + y_random))
@@ -86,6 +78,17 @@ class Amstelhaege():
         x2_mesh, y2_mesh = np.meshgrid(x2,y2)
         plt.scatter(x2_mesh, y2_mesh, marker="s", c="w")
         plt.scatter(x1_mesh, y1_mesh, marker="s", c="r")
+
+        if id == 1:
+            plt.scatter(x2_mesh, y2_mesh, marker="s", c="w")
+            plt.scatter(x1_mesh, y1_mesh, marker="s", c="r")
+        elif id == 2:
+            plt.scatter(x2_mesh, y2_mesh, marker="s", c="w")
+            plt.scatter(x1_mesh, y1_mesh, marker="s", c="g")
+        elif id == 3:
+            plt.scatter(x2_mesh, y2_mesh, marker="s", c="w")
+            plt.scatter(x1_mesh, y1_mesh, marker="s", c="b")
+
 
         self.count += 1
         self.value(id, x_random, y_random)
@@ -103,8 +106,10 @@ class Amstelhaege():
 
         if (x_random - vrij) < 0 or (y_random - vrij) < 0:
             self.place(id)
-        elif (x_random + vrij) > GRID_LEN or (y_random + vrij) > GRID_BRE:
+            return 0
+        elif (x_random + bre + vrij) > GRID_LEN or (y_random + len + vrij) > GRID_BRE:
             self.place(id)
+            return 0
 
         x_tester = 0
         y_tester = 0
@@ -154,7 +159,7 @@ class Amstelhaege():
         if id == 1:
             number = 4
         elif id == 2:
-            number = 5
+            number = 2
         elif id == 3:
             number = 3
 
@@ -185,7 +190,6 @@ if __name__ == "__main__":
 
     print("total value: ", amstelhaege.total_value)
 
-    plt.grid()
     plt.show()
 
 
