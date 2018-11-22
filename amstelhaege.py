@@ -7,9 +7,13 @@ from woning import Woning
 import numpy as np
 import matplotlib.pyplot as plt
 import random as rd
+import sys
 
 GRID_LEN = 321
 GRID_BRE = 361
+
+sys.setrecursionlimit(3000)
+
 
 class Amstelhaege():
     def __init__(self):
@@ -49,6 +53,8 @@ class Amstelhaege():
         y = np.arange(0, GRID_BRE)
         x_mesh, y_mesh = np.meshgrid(x,y)
         plt.scatter(x_mesh, y_mesh)
+        plt.xlim(0, GRID_LEN)
+        plt.ylim(0, GRID_BRE)
 
 
     def build_house(self, id, x_random, y_random):
@@ -60,15 +66,15 @@ class Amstelhaege():
         self.xcoordinaat_lijst.append(x_random)
         self.ycoordinaat_lijst.append(y_random)
 
-        if id = 1:
-            self.x1coordinaat_lijst.append(x_random)
-            self.y1coordinaat_lijst.append(y_random)
-        elif id = 2:
-            self.x2coordinaat_lijst.append(x_random)
-            self.y2coordinaat_lijst.append(y_random)
-        elif id = 3:
-            self.x3coordinaat_lijst.append(x_random)
-            self.y3coordinaat_lijst.append(y_random)
+        # if id == 1:
+        #     self.x1coordinaat_lijst.append(x_random)
+        #     self.y1coordinaat_lijst.append(y_random)
+        # elif id == 2:
+        #     self.x2coordinaat_lijst.append(x_random)
+        #     self.y2coordinaat_lijst.append(y_random)
+        # elif id == 3:
+        #     self.x3coordinaat_lijst.append(x_random)
+        #     self.y3coordinaat_lijst.append(y_random)
 
         x1 = np.arange(x_random, (int(bre * 2) + x_random))
         y1 = np.arange(y_random, (int(len * 2) + y_random))
@@ -79,7 +85,7 @@ class Amstelhaege():
         x1_mesh, y1_mesh = np.meshgrid(x1,y1)
         x2_mesh, y2_mesh = np.meshgrid(x2,y2)
         plt.scatter(x2_mesh, y2_mesh)
-        plt.scatter(x1_mesh, y1_mesh)
+        plt.scatter(x1_mesh, y1_mesh, marker="s")
 
         self.count += 1
         self.value(id, x_random, y_random)
@@ -93,8 +99,13 @@ class Amstelhaege():
         woning = self.woningen[id - 1]
         len = int(woning.lengte) * 2
         bre = int(woning.breedte) * 2
+        vrij = int(woning.minvrijstand) * 2
 
-        # if len(self.xcoordinaat_lijst) > 0:
+        if (x_random - vrij) < 0 or (y_random - vrij) < 0:
+            self.place(id)
+        elif (x_random + vrij) > GRID_LEN or (y_random + vrij) > GRID_BRE:
+            self.place(id)
+
         for coordinate in self.xcoordinaat_lijst:
             coordinate = int(coordinate)
             for x in range(coordinate, (coordinate + len)):
@@ -122,21 +133,24 @@ class Amstelhaege():
         woning = self.woningen[id - 1]
         len = woning.lengte
         bre = woning.breedte
-        VRIJSTAND = woning.minvrijstand
+        vrij = woning.minvrijstand
 
-        # lengte = horizontaal
-        # breedte = verticaal
+        # lengte = horizontaal = x
+        # breedte = verticaal = y
 
         x_random = rd.randrange(GRID_LEN - int(len * 2))
         y_random = rd.randrange(GRID_BRE - int(bre * 2))
 
+        print(x_random)
+        print(y_random)
+
         self.check_place(id, x_random, y_random)
         if id == 1:
-            number = 2
+            number = 4
         elif id == 2:
-            number = 5
+            number = 1
         elif id == 3:
-            number = 3
+            number = 1
 
         if self.count < number:
             self.place(id)
@@ -163,8 +177,9 @@ if __name__ == "__main__":
 
 
 
-    print(amstelhaege.total_value)
+    print("total value: ", amstelhaege.total_value)
 
+    plt.grid()
     plt.show()
 
 
