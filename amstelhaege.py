@@ -82,10 +82,10 @@ class Amstelhaege():
         x2 = np.arange((x_random - vrij), ((int(bre * 2) + x_random) + vrij))
         y2 = np.arange((y_random - vrij), ((int(len * 2) + y_random) + vrij))
 
-        x1_mesh, y1_mesh = np.meshgrid(x1,y1)
+        x1_mesh, y1_mesh = np.meshgrid(x1,y1,)
         x2_mesh, y2_mesh = np.meshgrid(x2,y2)
-        plt.scatter(x2_mesh, y2_mesh)
-        plt.scatter(x1_mesh, y1_mesh, marker="s")
+        plt.scatter(x2_mesh, y2_mesh, marker="s", c="w")
+        plt.scatter(x1_mesh, y1_mesh, marker="s", c="r")
 
         self.count += 1
         self.value(id, x_random, y_random)
