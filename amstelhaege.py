@@ -106,26 +106,32 @@ class Amstelhaege():
         elif (x_random + vrij) > GRID_LEN or (y_random + vrij) > GRID_BRE:
             self.place(id)
 
+        x_tester = 0
+        y_tester = 0
+
+
         for coordinate in self.xcoordinaat_lijst:
             coordinate = int(coordinate)
-            for x in range(coordinate, (coordinate + len)):
+            for x in range(coordinate, (coordinate + bre)):
                 if x == x_random:
-                    self.place(id)
-                    return 0
-            for x in range((coordinate - len), coordinate):
+                    x_tester += 1
+            for x in range((coordinate - bre), coordinate):
                 if x == x_random:
-                    self.place(id)
-                    return 0
+                    x_tester += 1
         for coordinate in self.ycoordinaat_lijst:
             coordinate = int(coordinate)
-            for y in range(coordinate, (coordinate + bre)):
+            for y in range(coordinate, (coordinate + len)):
                 if y == y_random:
-                    self.place(id)
-                    return 0
-            for y in range((coordinate - bre), coordinate):
+                    y_tester += 1
+            for y in range((coordinate - len), coordinate):
                 if y == y_random:
-                    self.place(id)
-                    return 0
+                    y_tester += 1
+
+        print("x_tester: ", x_tester)
+        print("y_tester: ", y_tester)
+        if x_tester > 0 and y_tester > 0:
+            self.place(id)
+            return 0
 
         self.build_house(id, x_random, y_random)
 
@@ -148,9 +154,9 @@ class Amstelhaege():
         if id == 1:
             number = 4
         elif id == 2:
-            number = 1
+            number = 5
         elif id == 3:
-            number = 1
+            number = 3
 
         if self.count < number:
             self.place(id)
