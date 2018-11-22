@@ -61,20 +61,12 @@ class Amstelhaege():
         woning = self.woningen[id - 1]
         len = woning.lengte
         bre = woning.breedte
-        vrij = woning.minvrijstand
+        vrij = woning.minvrijstand * 2
 
         self.xcoordinaat_lijst.append(x_random)
         self.ycoordinaat_lijst.append(y_random)
 
-        # if id == 1:
-        #     self.x1coordinaat_lijst.append(x_random)
-        #     self.y1coordinaat_lijst.append(y_random)
-        # elif id == 2:
-        #     self.x2coordinaat_lijst.append(x_random)
-        #     self.y2coordinaat_lijst.append(y_random)
-        # elif id == 3:
-        #     self.x3coordinaat_lijst.append(x_random)
-        #     self.y3coordinaat_lijst.append(y_random)
+
 
         x1 = np.arange(x_random, (int(bre * 2) + x_random))
         y1 = np.arange(y_random, (int(len * 2) + y_random))
@@ -86,6 +78,17 @@ class Amstelhaege():
         x2_mesh, y2_mesh = np.meshgrid(x2,y2)
         plt.scatter(x2_mesh, y2_mesh, marker="s", c="w")
         plt.scatter(x1_mesh, y1_mesh, marker="s", c="r")
+
+        if id == 1:
+            plt.scatter(x2_mesh, y2_mesh, marker="s", c="w")
+            plt.scatter(x1_mesh, y1_mesh, marker="s", c="r")
+        elif id == 2:
+            plt.scatter(x2_mesh, y2_mesh, marker="s", c="w")
+            plt.scatter(x1_mesh, y1_mesh, marker="s", c="g")
+        elif id == 3:
+            plt.scatter(x2_mesh, y2_mesh, marker="s", c="w")
+            plt.scatter(x1_mesh, y1_mesh, marker="s", c="b")
+
 
         self.count += 1
         self.value(id, x_random, y_random)
