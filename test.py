@@ -4,6 +4,8 @@
 # Amstelhaege
 
 from woning import Woning
+from uniek import Uniek
+from coordinate import Coordinate
 import numpy as np
 import matplotlib.pyplot as plt
 import random as rd
@@ -20,9 +22,11 @@ class Amstelhaege():
         self.woningen = self.load_woningen("woningen.txt")
         self.make_grid = self.make_grid()
         self.count = 0
+        self.hoeveelste_huis = 0
         self.total_value = 0
         self.xcoordinaat_lijst = []
         self.ycoordinaat_lijst = []
+        self.all_woningen = []
 
     def load_woningen(self, filename):
         with open(filename, "r") as f:
@@ -65,7 +69,12 @@ class Amstelhaege():
 
         self.xcoordinaat_lijst.append(x_random)
         self.ycoordinaat_lijst.append(y_random)
+        coordinate = Coordinate(x_random, y_random)
+        self.all_woningen.append(Uniek(id, coordinate))
 
+        self.all_woningen[plek].coordinate.add(x_random, y_random)
+
+        print("self.all_woningen: ", self.all_woningen)
 
 
         x1 = np.arange(x_random, (int(len * 2) + x_random))
@@ -91,10 +100,11 @@ class Amstelhaege():
 
 
         self.count += 1
+        self.hoeveelste_huis += 1
         self.value(id, x_random, y_random)
 
-        print(self.xcoordinaat_lijst)
-        print(self.ycoordinaat_lijst)
+        print("alle x coordinaten: ", self.xcoordinaat_lijst)
+        print("alle y coordinaten: ", self.ycoordinaat_lijst)
 
 
 
@@ -114,32 +124,24 @@ class Amstelhaege():
         x_tester = 0
         y_tester = 0
 
-        print(id)
+        print("id: ", id)
 
 
         for coordinate in self.xcoordinaat_lijst:
             coordinate = int(coordinate)
             for x in range(coordinate, (coordinate + len + vrij)):
                 if x == x_random:
-                    print(coordinate)
-                    print(coordinate + len + vrij)
                     x_tester += 1
             for x in range((coordinate - len - vrij), coordinate):
                 if x == x_random:
-                    print(coordinate)
-                    print(coordinate - len - vrij)
                     x_tester += 1
         for coordinate in self.ycoordinaat_lijst:
             coordinate = int(coordinate)
             for y in range(coordinate, (coordinate + bre + vrij)):
                 if y == y_random:
-                    print(coordinate)
-                    print(coordinate + bre + vrij)
                     y_tester += 1
             for y in range((coordinate - bre - vrij), coordinate):
                 if y == y_random:
-                    print(coordinate)
-                    print(coordinate - bre - vrij)
                     y_tester += 1
 
         print("x_tester: ", x_tester)
@@ -197,6 +199,8 @@ if __name__ == "__main__":
     amstelhaege.count = 0
     amstelhaege.place(3)
 
+    for woning in amstelhaege.all_woningen:
+        print(woning.coordinate)
 
 
     print("total value: ", amstelhaege.total_value)
