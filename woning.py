@@ -11,8 +11,8 @@ class Woning(object):
         self.prijs = prijs
         self.minvrijstand = minvrijstand
         self.waardestijging = waardestijging
-        # self.x_coordinaat = 
-        # self.y_coordinaat =
+        self.x_coordinaat = {}
+        self.y_coordinaat = {}
         # self.eindprijs =
 
 

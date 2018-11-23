@@ -12,7 +12,7 @@ import sys
 GRID_LEN = 321
 GRID_BRE = 361
 
-sys.setrecursionlimit(3000)
+sys.setrecursionlimit(16000)
 
 
 class Amstelhaege():
@@ -114,22 +114,32 @@ class Amstelhaege():
         x_tester = 0
         y_tester = 0
 
+        print(id)
+
 
         for coordinate in self.xcoordinaat_lijst:
             coordinate = int(coordinate)
-            for x in range(coordinate, (coordinate + bre)):
+            for x in range(coordinate, (coordinate + bre + vrij)):
                 if x == x_random:
+                    print(coordinate)
+                    print(coordinate + bre + vrij)
                     x_tester += 1
-            for x in range((coordinate - bre), coordinate):
+            for x in range((coordinate - bre - vrij), coordinate):
                 if x == x_random:
+                    print(coordinate)
+                    print(coordinate - bre - vrij)
                     x_tester += 1
         for coordinate in self.ycoordinaat_lijst:
             coordinate = int(coordinate)
-            for y in range(coordinate, (coordinate + len)):
+            for y in range(coordinate, (coordinate + len + vrij)):
                 if y == y_random:
+                    print(coordinate)
+                    print(coordinate + len + vrij)
                     y_tester += 1
-            for y in range((coordinate - len), coordinate):
+            for y in range((coordinate - len - vrij), coordinate):
                 if y == y_random:
+                    print(coordinate)
+                    print(coordinate - len - vrij)
                     y_tester += 1
 
         print("x_tester: ", x_tester)
@@ -152,14 +162,15 @@ class Amstelhaege():
         x_random = rd.randrange(GRID_LEN - int(len * 2))
         y_random = rd.randrange(GRID_BRE - int(bre * 2))
 
-        print(x_random)
-        print(y_random)
+        print()
+        print("x_random: ", x_random)
+        print("y_random: ", y_random)
 
         self.check_place(id, x_random, y_random)
         if id == 1:
             number = 4
         elif id == 2:
-            number = 2
+            number = 5
         elif id == 3:
             number = 3
 
