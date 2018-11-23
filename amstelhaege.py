@@ -68,11 +68,11 @@ class Amstelhaege():
 
 
 
-        x1 = np.arange(x_random, (int(bre * 2) + x_random))
-        y1 = np.arange(y_random, (int(len * 2) + y_random))
+        x1 = np.arange(x_random, (int(len * 2) + x_random))
+        y1 = np.arange(y_random, (int(bre * 2) + y_random))
 
-        x2 = np.arange((x_random - vrij), ((int(bre * 2) + x_random) + vrij))
-        y2 = np.arange((y_random - vrij), ((int(len * 2) + y_random) + vrij))
+        x2 = np.arange((x_random - vrij), ((int(len * 2) + x_random) + vrij))
+        y2 = np.arange((y_random - vrij), ((int(bre * 2) + y_random) + vrij))
 
         x1_mesh, y1_mesh = np.meshgrid(x1,y1,)
         x2_mesh, y2_mesh = np.meshgrid(x2,y2)
@@ -107,7 +107,7 @@ class Amstelhaege():
         if (x_random - vrij) < 0 or (y_random - vrij) < 0:
             self.place(id)
             return 0
-        elif (x_random + bre + vrij) > GRID_LEN or (y_random + len + vrij) > GRID_BRE:
+        elif (x_random + len + vrij) > GRID_LEN or (y_random + bre + vrij) > GRID_BRE:
             self.place(id)
             return 0
 
@@ -119,27 +119,27 @@ class Amstelhaege():
 
         for coordinate in self.xcoordinaat_lijst:
             coordinate = int(coordinate)
-            for x in range(coordinate, (coordinate + bre + vrij)):
+            for x in range(coordinate, (coordinate + len + vrij)):
                 if x == x_random:
                     print(coordinate)
-                    print(coordinate + bre + vrij)
+                    print(coordinate + len + vrij)
                     x_tester += 1
-            for x in range((coordinate - bre - vrij), coordinate):
+            for x in range((coordinate - len - vrij), coordinate):
                 if x == x_random:
                     print(coordinate)
-                    print(coordinate - bre - vrij)
+                    print(coordinate - len - vrij)
                     x_tester += 1
         for coordinate in self.ycoordinaat_lijst:
             coordinate = int(coordinate)
-            for y in range(coordinate, (coordinate + len + vrij)):
+            for y in range(coordinate, (coordinate + bre + vrij)):
                 if y == y_random:
                     print(coordinate)
-                    print(coordinate + len + vrij)
+                    print(coordinate + bre + vrij)
                     y_tester += 1
-            for y in range((coordinate - len - vrij), coordinate):
+            for y in range((coordinate - bre - vrij), coordinate):
                 if y == y_random:
                     print(coordinate)
-                    print(coordinate - len - vrij)
+                    print(coordinate - bre - vrij)
                     y_tester += 1
 
         print("x_tester: ", x_tester)
@@ -159,8 +159,8 @@ class Amstelhaege():
         # lengte = horizontaal = x
         # breedte = verticaal = y
 
-        x_random = rd.randrange(GRID_LEN - int(len * 2))
-        y_random = rd.randrange(GRID_BRE - int(bre * 2))
+        x_random = rd.randrange(GRID_LEN - int(bre * 2))
+        y_random = rd.randrange(GRID_BRE - int(len * 2))
 
         print()
         print("x_random: ", x_random)
