@@ -79,6 +79,8 @@ class Amstelhaege():
             # ff om in ieder geval 1 huis te plaatsen
             if self.count == 0:
                 checker += 1
+                vrij = woning.minvrijstand * 2
+                break
 
             # if x_random and y_random are possible coordinates to place new house:
                 # checker += 1
