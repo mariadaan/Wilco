@@ -78,13 +78,12 @@ class Amstelhaege():
 
             coordinaat = Coordinate(x_random, y_random)
             self.coordinate.append(coordinaat)
-            for coordinate in self.coordinate:
-                print(coordinate.x_random)
+        for coordinate in self.coordinate:
+            print(coordinate.x_random)
+            print(coordinate.y_random)
             # unieke_woning = Uniek(id, coordinaat)
             # self.all_woningen.append(unieke_woning)
             # print("self.all_woningen: ", self.all_woningen)
-
-        (print(self.coordinate))
 
 
 

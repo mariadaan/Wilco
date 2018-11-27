@@ -159,8 +159,8 @@ class Amstelhaege():
         # lengte = horizontaal = x
         # breedte = verticaal = y
 
-        x_random = rd.randrange(GRID_LEN - int(bre * 2))
-        y_random = rd.randrange(GRID_BRE - int(len * 2))
+        x_random = rd.randrange(vrij, GRID_LEN - int(bre * 2) - vrij)
+        y_random = rd.randrange(vrij, GRID_BRE - int(len * 2) - vrij)
 
         print()
         print("x_random: ", x_random)
