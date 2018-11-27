@@ -176,12 +176,13 @@ class Amstelhaege():
 if __name__ == "__main__":
     amstelhaege = Amstelhaege()
 
-    for i in range(12):
-        amstelhaege.check_and_place(1)
-    for i in range(5):
-        amstelhaege.check_and_place(2)
-    for i in range(3):
+    for i in range(9):
         amstelhaege.check_and_place(3)
+    for i in range(15):
+        amstelhaege.check_and_place(2)
+    for i in range(36):
+        amstelhaege.check_and_place(1)
+
 
     # for c in amstelhaege.all_woningen:
     #     print()
