@@ -74,18 +74,16 @@ class Amstelhaege():
             x_random = rd.randrange(new_vrij, GRID_LEN - new_len - new_vrij)
             y_random = rd.randrange(new_vrij, GRID_BRE - new_bre - new_vrij)
 
-            print("x_random: ", x_random)
-            print("y_random: ", y_random)
-
-            checker = 0
-
-            print(self.all_woningen)
+            loop = 0
+            huh = 0
 
             # ff om in ieder geval 1 huis te plaatsen
             if self.count == 0:
                 checker += 1
             else:
                 for placed_woning in self.all_woningen:
+                    loop += 1
+                    print("loop: ", loop)
                     placed_id = placed_woning.coordinate[0]
                     placed_x = placed_woning.coordinate[1]
                     placed_y = placed_woning.coordinate[2]
@@ -103,36 +101,49 @@ class Amstelhaege():
                     x_checker = 0
                     y_checker = 0
 
-                    x_lower = int(x_random - max_vrij - placed_len)
-                    x_upper = int(x_random + new_len + max_vrij)
 
-                    print("id1: ", placed_id)
+                    print("placed_id: ", placed_id)
                     print("placed_x: ", placed_x)
                     print("placed_y: ", placed_y)
-                    print("id2: ", id)
+                    print("new_id: ", id)
+                    print("x_random: ", x_random)
+                    print("y_random: ", y_random)
+                    print("max_vrij: ", max_vrij)
 
-                    print("x_lower: ", x_lower)
-                    print("x_upper: ", x_upper)
+
+                    x_lower = int(x_random - max_vrij - placed_len)
+                    x_upper = int(x_random + new_len + max_vrij)
 
                     if placed_x in range(x_lower, x_upper):
                         x_checker += 1
 
                     y_lower = int(y_random - max_vrij - placed_bre)
-                    y_upper = int(y_random - new_bre - max_vrij)
+                    y_upper = int(y_random + new_bre + max_vrij)
 
                     if placed_y in range(y_lower, y_upper):
                         y_checker += 1
 
+                    print("x_lower: ", x_lower)
+                    print("x_upper: ", x_upper)
+                    print("y_lower: ", y_lower)
+                    print("y_upper: ", y_upper)
+
                     print("x_checker: ", x_checker)
                     print("y_checker: ", y_checker)
-                    print()
 
                     if x_checker > 0 and y_checker > 0:
-                        print("niet geplaatst")
-                    else:
-                        checker += 1
-                        print("huis plaatsen")
+                        print("huis niet plaatsen")
+                        huh +=1
                         break
+                        print()
+                    else:
+                        print("nog niet uitgesloten")
+                        print()
+                if huh == 0:
+                    print("huis mag geplaatst worden!")
+                    checker += 1
+
+
 
         self.all_woningen.append(Coordinate())
         self.all_woningen[-1].add(id, x_random, y_random)
@@ -173,6 +184,7 @@ if __name__ == "__main__":
         amstelhaege.check_and_place(3)
 
     # for c in amstelhaege.all_woningen:
+    #     print()
     #     print("id:", c.coordinate[0])
     #     print("x:", c.coordinate[1])
     #     print("y:", c.coordinate[2])
