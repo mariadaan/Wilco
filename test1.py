@@ -21,10 +21,10 @@ class Amstelhaege():
         self.woningen = self.load_woningen("woningen.txt")
         self.make_grid = self.make_grid()
         self.count = 0
-        self.total_value = 0
         self.xcoordinaat_lijst = []
         self.ycoordinaat_lijst = []
         self.all_woningen = []
+        self.total_value = 0
 
     def load_woningen(self, filename):
         with open(filename, "r") as f:
@@ -83,7 +83,7 @@ class Amstelhaege():
             else:
                 for placed_woning in self.all_woningen:
                     loop += 1
-                    print("loop: ", loop)
+                    # print("loop: ", loop)
                     placed_id = placed_woning.coordinate[0]
                     placed_x = placed_woning.coordinate[1]
                     placed_y = placed_woning.coordinate[2]
@@ -102,13 +102,13 @@ class Amstelhaege():
                     y_checker = 0
 
 
-                    print("placed_id: ", placed_id)
-                    print("placed_x: ", placed_x)
-                    print("placed_y: ", placed_y)
-                    print("new_id: ", id)
-                    print("x_random: ", x_random)
-                    print("y_random: ", y_random)
-                    print("max_vrij: ", max_vrij)
+                    # print("placed_id: ", placed_id)
+                    # print("placed_x: ", placed_x)
+                    # print("placed_y: ", placed_y)
+                    # print("new_id: ", id)
+                    # print("x_random: ", x_random)
+                    # print("y_random: ", y_random)
+                    # print("max_vrij: ", max_vrij)
 
 
                     x_lower = int(x_random - max_vrij - placed_len)
@@ -123,30 +123,27 @@ class Amstelhaege():
                     if placed_y in range(y_lower, y_upper):
                         y_checker += 1
 
-                    print("x_lower: ", x_lower)
-                    print("x_upper: ", x_upper)
-                    print("y_lower: ", y_lower)
-                    print("y_upper: ", y_upper)
-
-                    print("x_checker: ", x_checker)
-                    print("y_checker: ", y_checker)
+                    # print("x_lower: ", x_lower)
+                    # print("x_upper: ", x_upper)
+                    # print("y_lower: ", y_lower)
+                    # print("y_upper: ", y_upper)
+                    #
+                    # print("x_checker: ", x_checker)
+                    # print("y_checker: ", y_checker)
 
                     if x_checker > 0 and y_checker > 0:
-                        print("huis niet plaatsen")
                         huh +=1
                         break
-                        print()
-                    else:
-                        print("nog niet uitgesloten")
-                        print()
+
                 if huh == 0:
-                    print("huis mag geplaatst worden!")
                     checker += 1
 
+        self.build_house(id, x_random, y_random, new_len, new_bre, new_vrij)
 
-
+    def build_house(self, id, x_random, y_random, new_len, new_bre, new_vrij):
         self.all_woningen.append(Coordinate())
         self.all_woningen[-1].add(id, x_random, y_random)
+        print(f"({x_random}, {y_random})")
 
 
         # Build house
@@ -173,15 +170,71 @@ class Amstelhaege():
 
         self.count += 1
 
+    def value(self):
+        for house in self.all_woningen:
+            id = house.coordinate[0]
+            vrij = self.woningen[id - 1].minvrijstand * 2
+            len = self.woningen[id - 1].lengte * 2
+            bre = self.woningen[id - 1].breedte * 2
+            x_leftlower = house.coordinate[1]
+            y_leftlower = house.coordinate[2]
+            x_min = int(x_leftlower - vrij)
+            x_max = int(x_leftlower + len + vrij)
+            y_min = int(y_leftlower - vrij)
+            y_max = int(y_leftlower + bre + vrij)
+
+            afstanden = []
+
+            # afstand tot x en y-as
+            afstanden.append(x_min)
+            afstanden.append(y_min)
+            afstanden.append(GRID_LEN - x_max)
+            afstanden.append(GRID_BRE - y_max)
+
+            for housee in self.all_woningen:
+                id2 = house.coordinate[0]
+                vrij2 = self.woningen[id - 1].minvrijstand * 2
+                len2 = self.woningen[id - 1].lengte * 2
+                bre2 = self.woningen[id - 1].breedte * 2
+                x_min2 = int(housee.coordinate[1])
+                x_max2 = int(housee.coordinate[1] + len2)
+                y_min2 = int(housee.coordinate[2])
+                y_max2 = int(housee.coordinate[2] + bre2)
+
+                if x_min2 in range(x_min, x_max):
+                    if x_leftlower == x_min2:
+                        pass
+                    elif y_min > y_min2:
+                        afstanden.append(y_min - y_max2)
+                    else:
+                        afstanden.append(y_min2 - y_max)
+                if y_min2 in range(y_min, y_max):
+                    if y_leftlower == y_min2:
+                        pass
+                    elif x_min > x_min2:
+                        afstanden.append(x_min - x_max2)
+                    else:
+                        afstanden.append(x_min2 - x_max)
+
+            extrameters = float(min(afstanden)) / 2
+            print(extrameters)
+            house_value = self.woningen[id - 1].prijs + (self.woningen[id - 1].prijs * extrameters * self.woningen[id - 1].waardestijging)
+            self.total_value += house_value
+
+
+
 if __name__ == "__main__":
     amstelhaege = Amstelhaege()
 
-    for i in range(9):
+    for i in range(3):
         amstelhaege.check_and_place(3)
-    for i in range(15):
+    for i in range(5):
         amstelhaege.check_and_place(2)
-    for i in range(36):
+    for i in range(12):
         amstelhaege.check_and_place(1)
+
+    amstelhaege.value()
+    print(amstelhaege.total_value)
 
 
     # for c in amstelhaege.all_woningen:
