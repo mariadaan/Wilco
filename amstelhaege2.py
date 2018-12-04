@@ -8,10 +8,13 @@ from coordinate import Coordinate
 import numpy as np
 import matplotlib.pyplot as plt
 import random as rd
+import sys
 import math
 
 GRID_LEN = 321 #x
 GRID_BRE = 361 #y
+
+sys.setrecursionlimit(16000)
 
 
 class Amstelhaege():
@@ -23,9 +26,6 @@ class Amstelhaege():
         self.ycoordinaat_lijst = []
         self.all_woningen = []
         self.total_value = 0
-        self.width = GRID_LEN
-        self.height = GRID_BRE
-        self.meters = []
 
     def load_woningen(self, filename):
         with open(filename, "r") as f:
@@ -84,6 +84,7 @@ class Amstelhaege():
             else:
                 for placed_woning in self.all_woningen:
                     loop += 1
+                    # print("loop: ", loop)
                     placed_id = placed_woning.coordinate[0]
                     placed_x = placed_woning.coordinate[1]
                     placed_y = placed_woning.coordinate[2]
@@ -92,7 +93,7 @@ class Amstelhaege():
 
                     max_vrij = 0
 
-                    # max_vrij = grootste vrijstand
+                    # vrij = grootste vrijstand
                     if self.woningen[placed_id - 1].minvrijstand > new_woning.minvrijstand:
                         max_vrij = (self.woningen[placed_id - 1].minvrijstand) * 2
                     else:
@@ -100,6 +101,15 @@ class Amstelhaege():
 
                     x_checker = 0
                     y_checker = 0
+
+
+                    # print("placed_id: ", placed_id)
+                    # print("placed_x: ", placed_x)
+                    # print("placed_y: ", placed_y)
+                    # print("new_id: ", id)
+                    # print("x_random: ", x_random)
+                    # print("y_random: ", y_random)
+                    # print("max_vrij: ", max_vrij)
 
 
                     x_lower = int(x_random - max_vrij - placed_len)
@@ -114,6 +124,14 @@ class Amstelhaege():
                     if placed_y in range(y_lower, y_upper):
                         y_checker += 1
 
+                    # print("x_lower: ", x_lower)
+                    # print("x_upper: ", x_upper)
+                    # print("y_lower: ", y_lower)
+                    # print("y_upper: ", y_upper)
+                    #
+                    # print("x_checker: ", x_checker)
+                    # print("y_checker: ", y_checker)
+
                     if x_checker > 0 and y_checker > 0:
                         huh +=1
                         break
@@ -126,90 +144,35 @@ class Amstelhaege():
     def build_house(self, id, x_random, y_random, new_len, new_bre, new_vrij):
         self.all_woningen.append(Coordinate())
         self.all_woningen[-1].add(id, x_random, y_random)
+        # print(f"({x_random}, {y_random})")
 
-        self.plot_houses()
+
+        # Build house
+        x1 = np.arange(x_random, new_len + x_random)
+        y1 = np.arange(y_random, new_bre + y_random)
+
+        x2 = np.arange((x_random - new_vrij), (new_len + x_random + new_vrij))
+        y2 = np.arange((y_random - new_vrij), (new_bre + y_random + new_vrij))
+
+        x1_mesh, y1_mesh = np.meshgrid(x1,y1)
+        x2_mesh, y2_mesh = np.meshgrid(x2,y2)
+        plt.scatter(x2_mesh, y2_mesh, marker="s", c="w")
+        plt.scatter(x1_mesh, y1_mesh, marker="s", c="r")
+
+        if id == 1:
+            plt.scatter(x2_mesh, y2_mesh, marker="s", c="w")
+            plt.scatter(x1_mesh, y1_mesh, marker="s", c="r")
+        elif id == 2:
+            plt.scatter(x2_mesh, y2_mesh, marker="s", c="w")
+            plt.scatter(x1_mesh, y1_mesh, marker="s", c="g")
+        elif id == 3:
+            plt.scatter(x2_mesh, y2_mesh, marker="s", c="w")
+            plt.scatter(x1_mesh, y1_mesh, marker="s", c="b")
+
         self.count += 1
 
-
-    def plot_houses(self):
-        for woning in self.all_woningen:
-            id = woning.coordinate[0]
-            x_random = woning.coordinate[1]
-            y_random = woning.coordinate[2]
-            new_len = self.woningen[id - 1].lengte * 2
-            new_bre = self.woningen[id - 1].breedte * 2
-            new_vrij = self.woningen[id - 1].minvrijstand * 2
-
-
-            x1 = np.arange(x_random, new_len + x_random)
-            y1 = np.arange(y_random, new_bre + y_random)
-
-
-            x2 = np.arange((x_random - new_vrij), (new_len + x_random + new_vrij))
-            y2 = np.arange((y_random - new_vrij), (new_bre + y_random + new_vrij))
-
-            x1_mesh, y1_mesh = np.meshgrid(x1,y1)
-            x2_mesh, y2_mesh = np.meshgrid(x2,y2)
-
-            if id == 1:
-                plt.scatter(x2_mesh, y2_mesh, marker="s", c="w")
-                plt.scatter(x1_mesh, y1_mesh, marker="s", c="r")
-            elif id == 2:
-                plt.scatter(x2_mesh, y2_mesh, marker="s", c="w")
-                plt.scatter(x1_mesh, y1_mesh, marker="s", c="g")
-            elif id == 3:
-                plt.scatter(x2_mesh, y2_mesh, marker="s", c="w")
-                plt.scatter(x1_mesh, y1_mesh, marker="s", c="b")
-            elif id == 4:
-                plt.scatter(x2_mesh, y2_mesh, marker="s", c="y")
-                plt.scatter(x1_mesh, y1_mesh, marker="s", c="b")
-
-        plt.cla()
-
-
-
-    def random_hillclimber(self):
-        while self.total_value < 30000000:
-            value1 = self.value()
-            random_house_index = rd.randrange(0, 19)
-            random_house_id = self.all_woningen[random_house_index].coordinate[0]
-            deleted = self.all_woningen.pop(random_house_index)
-            self.check_and_place(random_house_id)
-            value2 = self.value()
-
-            if value2 <= value1:
-                print("niet geaccepteerd: ", self.usd(value2))
-                self.all_woningen.pop(-1)
-                self.all_woningen.append(deleted)
-            else:
-                print("wel geaccepteerd: ", self.usd(value2))
-
-
-    def semirandom_hillclimber(self):
-        while self.total_value < 12000000:
-            value1 = self.value()
-            random_house_index = self.meters.index(min(self.meters))
-            random_house_id = self.all_woningen[random_house_index].coordinate[0]
-            deleted = self.all_woningen.pop(random_house_index)
-            self.check_and_place(random_house_id)
-            value2 = self.value()
-
-            if value2 <= value1:
-                self.all_woningen.pop(-1)
-                self.all_woningen.append(deleted)
-            else:
-                print("wel geaccepteerd: ", self.usd(value2))
-
-
-    # def water(self):
-
-
-
     def value(self):
-
         # huis 1
-        self.total_value = 0
-
         for house in self.all_woningen:
             # eigenschappen huis 1
             id = house.coordinate[0]
@@ -234,18 +197,18 @@ class Amstelhaege():
             afstanden = []
 
             # afstand tot randen van grid
-            afstanden.append(x_min)
-            afstanden.append(y_min)
-            afstanden.append(GRID_LEN - x_max)
-            afstanden.append(GRID_BRE - y_max)
+            # afstanden.append(x_min)
+            # afstanden.append(y_min)
+            # afstanden.append(GRID_LEN - x_max)
+            # afstanden.append(GRID_BRE - y_max)
 
             # huis 2
             for housee in self.all_woningen:
                 # eigenschappen huis 2
-                id2 = housee.coordinate[0]
-                vrij2 = self.woningen[id2 - 1].minvrijstand * 2
-                len2 = self.woningen[id2 - 1].lengte * 2
-                bre2 = self.woningen[id2 - 1].breedte * 2
+                id2 = house.coordinate[0]
+                vrij2 = self.woningen[id - 1].minvrijstand * 2
+                len2 = self.woningen[id - 1].lengte * 2
+                bre2 = self.woningen[id - 1].breedte * 2
 
                 # linkeronderhoek en rechterbovenhoek huis 2
                 x_left2 = int(housee.coordinate[1])
@@ -258,10 +221,10 @@ class Amstelhaege():
                     if x_left == x_left2 and y_lower == y_lower2:
                         # zelfde huis, niet met zichzelf vergelijken
                         pass
-                    elif y_lower > y_upper2:
+                    elif y_lower > y_lower2:
                         # huis 1 ligt boven huis 2
                         afstanden.append(y_min - y_upper2)
-                    elif y_upper < y_lower2:
+                    else:
                         # huis 1 ligt onder huis 2
                         afstanden.append(y_lower2 - y_max)
 
@@ -270,10 +233,10 @@ class Amstelhaege():
                     if x_left == x_left2 and y_lower == y_lower2:
                         # zelfde huis, niet met zichzelf vergelijken
                         pass
-                    elif x_min > x_right2:
+                    elif x_min > x_left2:
                         # huis 1 ligt rechts van huis 2
                         afstanden.append(x_min - x_right2)
-                    elif x_right < x_left2:
+                    else:
                         # huis 1 ligt links van huis 2
                         afstanden.append(x_left2 - x_max)
 
@@ -308,46 +271,29 @@ class Amstelhaege():
                     afstanden.append(C - vrij)
 
 
-            extrameters = int(min(afstanden) / 2)
-            if extrameters < 0:
-                print("huis 1: ")
-                print(id)
-                print(x_left)
-                print(y_lower)
-                print("huis 2: ")
-                print(id2)
-                print(x_left2)
-                print(y_lower2)
-            self.meters.append(extrameters)
+            extrameters = float(min(afstanden)) / 2
             house_value = self.woningen[id - 1].prijs + (self.woningen[id - 1].prijs * extrameters * self.woningen[id - 1].waardestijging)
             self.total_value += house_value
-        return self.total_value
 
 
-    def usd(self, value):
-        """Format value as USD."""
-        return f"${value:,.2f}"
 
 if __name__ == "__main__":
     amstelhaege = Amstelhaege()
 
-    huizenvariant = 20
+    huizenvariant = 60
 
     if huizenvariant == 20:
         eengezins = 12
         bungalow = 5
         villa = 3
-        # water = 4
     elif huizenvariant == 40:
         eengezins = 24
         bungalow = 10
         villa = 6
-        # water = 4
     elif huizenvariant == 60:
         eengezins = 36
         bungalow = 15
         villa = 9
-        # water = 4
 
     for i in range(villa):
         amstelhaege.check_and_place(3)
@@ -355,23 +301,9 @@ if __name__ == "__main__":
         amstelhaege.check_and_place(2)
     for i in range(eengezins):
         amstelhaege.check_and_place(1)
-    # for i in range(water):
-    #     amstelhaege.check_and_place(4)
 
     amstelhaege.value()
-    startvalue = amstelhaege.total_value
-    print("startwaarde: ", amstelhaege.usd(startvalue))
-
-    # amstelhaege.water()
-
-    # amstelhaege.random_hillclimber()
-    amstelhaege.semirandom_hillclimber()
-
-    amstelhaege.value()
-    finalvalue = amstelhaege.total_value
-    print("eindwaarde: ", amstelhaege.usd(finalvalue))
-    print(amstelhaege.all_woningen)
-    amstelhaege.plot_houses()
+    print(amstelhaege.total_value)
 
 
     # for c in amstelhaege.all_woningen:
