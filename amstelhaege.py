@@ -218,7 +218,7 @@ class Amstelhaege():
 
                 # loodrechte afstanden: huizen liggen boven elkaar
                 if x_left2 in range(x_left, x_right) or x_right2 in range(x_left, x_right):
-                    if x_left == x_left2:
+                    if x_left == x_left2 and y_lower == y_lower2:
                         # zelfde huis, niet met zichzelf vergelijken
                         pass
                     elif y_lower > y_lower2:
@@ -230,7 +230,7 @@ class Amstelhaege():
 
                 # loodrechte afstanden: huizen liggen naast elkaar
                 if y_lower2 in range(y_lower, y_upper) or y_upper2 in range(y_lower, y_upper):
-                    if y_lower == y_lower2:
+                    if x_left == x_left2 and y_lower == y_lower2:
                         # zelfde huis, niet met zichzelf vergelijken
                         pass
                     elif x_min > x_left2:
