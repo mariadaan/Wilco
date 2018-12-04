@@ -26,6 +26,8 @@ class Amstelhaege():
         self.ycoordinaat_lijst = []
         self.all_woningen = []
         self.total_value = 0
+        self.width = GRID_LEN
+        self.height = GRID_BRE
 
     def load_woningen(self, filename):
         with open(filename, "r") as f:
@@ -151,28 +153,46 @@ class Amstelhaege():
         x1 = np.arange(x_random, new_len + x_random)
         y1 = np.arange(y_random, new_bre + y_random)
 
+
         x2 = np.arange((x_random - new_vrij), (new_len + x_random + new_vrij))
         y2 = np.arange((y_random - new_vrij), (new_bre + y_random + new_vrij))
 
         x1_mesh, y1_mesh = np.meshgrid(x1,y1)
         x2_mesh, y2_mesh = np.meshgrid(x2,y2)
-        plt.scatter(x2_mesh, y2_mesh, marker="s", c="w")
-        plt.scatter(x1_mesh, y1_mesh, marker="s", c="r")
 
         if id == 1:
+            print()
             plt.scatter(x2_mesh, y2_mesh, marker="s", c="w")
             plt.scatter(x1_mesh, y1_mesh, marker="s", c="r")
         elif id == 2:
+            print()
+
             plt.scatter(x2_mesh, y2_mesh, marker="s", c="w")
             plt.scatter(x1_mesh, y1_mesh, marker="s", c="g")
         elif id == 3:
+            print()
+
             plt.scatter(x2_mesh, y2_mesh, marker="s", c="w")
             plt.scatter(x1_mesh, y1_mesh, marker="s", c="b")
+        elif id == 4:
+            plt.scatter(x2_mesh, y2_mesh, marker="s", c="y")
+            plt.scatter(x1_mesh, y1_mesh, marker="s", c="b")
+
+
 
         self.count += 1
 
+    # def move(self, id, x_random, y_random, new_len, new_bre, new_vrij):
+
+
+    # def water(self):
+
+
+
     def value(self):
+
         # huis 1
+
         for house in self.all_woningen:
             # eigenschappen huis 1
             id = house.coordinate[0]
@@ -280,20 +300,23 @@ class Amstelhaege():
 if __name__ == "__main__":
     amstelhaege = Amstelhaege()
 
-    huizenvariant = 60
+    huizenvariant = 20
 
     if huizenvariant == 20:
         eengezins = 12
         bungalow = 5
         villa = 3
+        # water = 4
     elif huizenvariant == 40:
         eengezins = 24
         bungalow = 10
         villa = 6
+        # water = 4
     elif huizenvariant == 60:
         eengezins = 36
         bungalow = 15
         villa = 9
+        # water = 4
 
     for i in range(villa):
         amstelhaege.check_and_place(3)
@@ -301,9 +324,13 @@ if __name__ == "__main__":
         amstelhaege.check_and_place(2)
     for i in range(eengezins):
         amstelhaege.check_and_place(1)
+    # for i in range(water):
+    #     amstelhaege.check_and_place(4)
 
     amstelhaege.value()
     print(amstelhaege.total_value)
+
+    # amstelhaege.water()
 
 
     # for c in amstelhaege.all_woningen:
