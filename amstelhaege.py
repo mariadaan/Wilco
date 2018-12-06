@@ -8,7 +8,9 @@ from coordinate import Coordinate
 import numpy as np
 import matplotlib.pyplot as plt
 import random as rd
+import statistics as stat
 import math
+import time
 
 GRID_LEN = 321 #x
 GRID_BRE = 361 #y
@@ -17,7 +19,7 @@ GRID_BRE = 361 #y
 class Amstelhaege():
     def __init__(self):
         self.woningen = self.load_woningen("woningen.txt")
-        self.make_grid = self.make_grid()
+        # self.make_grid = self.make_grid()
         self.count = 0
         self.xcoordinaat_lijst = []
         self.ycoordinaat_lijst = []
@@ -126,12 +128,18 @@ class Amstelhaege():
     def build_house(self, id, x_random, y_random, new_len, new_bre, new_vrij):
         self.all_woningen.append(Coordinate())
         self.all_woningen[-1].add(id, x_random, y_random)
-
-        self.plot_houses()
         self.count += 1
 
 
     def plot_houses(self):
+        # make grid
+        x = np.arange(0, GRID_LEN)
+        y = np.arange(0, GRID_BRE)
+        x_mesh, y_mesh = np.meshgrid(x,y)
+        plt.scatter(x_mesh, y_mesh, marker="s", c="lightgreen")
+        plt.xlim(0, GRID_LEN)
+        plt.ylim(0, GRID_BRE)
+
         for woning in self.all_woningen:
             id = woning.coordinate[0]
             x_random = woning.coordinate[1]
@@ -164,12 +172,13 @@ class Amstelhaege():
                 plt.scatter(x2_mesh, y2_mesh, marker="s", c="y")
                 plt.scatter(x1_mesh, y1_mesh, marker="s", c="b")
 
-        plt.cla()
+        # plt.show()
+
 
 
 
     def random_hillclimber(self):
-        while self.total_value < 30000000:
+        for i in range(10000):
             value1 = self.value()
             random_house_index = rd.randrange(0, 19)
             random_house_id = self.all_woningen[random_house_index].coordinate[0]
@@ -178,15 +187,15 @@ class Amstelhaege():
             value2 = self.value()
 
             if value2 <= value1:
-                print("niet geaccepteerd: ", self.usd(value2))
+                # print("niet geaccepteerd: ", self.usd(value2))
                 self.all_woningen.pop(-1)
                 self.all_woningen.append(deleted)
-            else:
-                print("wel geaccepteerd: ", self.usd(value2))
+            # else:
+                # print("wel geaccepteerd: ", self.usd(value2))
 
 
     def semirandom_hillclimber(self):
-        while self.total_value < 12000000:
+        for i in range(10000):
             value1 = self.value()
             random_house_index = self.meters.index(min(self.meters))
             random_house_id = self.all_woningen[random_house_index].coordinate[0]
@@ -195,20 +204,21 @@ class Amstelhaege():
             value2 = self.value()
 
             if value2 <= value1:
+                # print("niet geaccepteerd: ", self.usd(value2))
                 self.all_woningen.pop(-1)
                 self.all_woningen.append(deleted)
-            else:
-                print("wel geaccepteerd: ", self.usd(value2))
-
-
-    # def water(self):
-
+            # else:
+                # print(self.meters)
+                # print("wel geaccepteerd: ", self.usd(value2))
+                # self.plot_houses()
+                # plt.pause(0.01)
 
 
     def value(self):
 
         # huis 1
         self.total_value = 0
+        self.meters = []
 
         for house in self.all_woningen:
             # eigenschappen huis 1
@@ -234,10 +244,10 @@ class Amstelhaege():
             afstanden = []
 
             # afstand tot randen van grid
-            afstanden.append(x_min)
-            afstanden.append(y_min)
-            afstanden.append(GRID_LEN - x_max)
-            afstanden.append(GRID_BRE - y_max)
+            # afstanden.append(x_min)
+            # afstanden.append(y_min)
+            # afstanden.append(GRID_LEN - x_max)
+            # afstanden.append(GRID_BRE - y_max)
 
             # huis 2
             for housee in self.all_woningen:
@@ -329,57 +339,75 @@ class Amstelhaege():
         return f"${value:,.2f}"
 
 if __name__ == "__main__":
-    amstelhaege = Amstelhaege()
 
-    huizenvariant = 20
+    hillclimber = []
+    random = []
+    semirandom_hillclimber = []
+    runtimes_random = []
+    runtimes_hillclimber = []
+    runtimes_semirandom = []
 
-    if huizenvariant == 20:
-        eengezins = 12
-        bungalow = 5
-        villa = 3
+    for i in range(10):
+        random_begintijd = time.time()
+        amstelhaege = Amstelhaege()
+
+        huizenvariant = 60
+
+        eengezins = int(huizenvariant * 0.6)
+        bungalow = int(huizenvariant * 0.25)
+        villa = int(huizenvariant * 0.15)
         # water = 4
-    elif huizenvariant == 40:
-        eengezins = 24
-        bungalow = 10
-        villa = 6
-        # water = 4
-    elif huizenvariant == 60:
-        eengezins = 36
-        bungalow = 15
-        villa = 9
-        # water = 4
 
-    for i in range(villa):
-        amstelhaege.check_and_place(3)
-    for i in range(bungalow):
-        amstelhaege.check_and_place(2)
-    for i in range(eengezins):
-        amstelhaege.check_and_place(1)
-    # for i in range(water):
-    #     amstelhaege.check_and_place(4)
+        for j in range(villa):
+            amstelhaege.check_and_place(3)
+        for j in range(bungalow):
+            amstelhaege.check_and_place(2)
+        for j in range(eengezins):
+            amstelhaege.check_and_place(1)
+        # for i in range(water):
+        #     amstelhaege.check_and_place(4)
 
-    amstelhaege.value()
-    startvalue = amstelhaege.total_value
-    print("startwaarde: ", amstelhaege.usd(startvalue))
-
-    # amstelhaege.water()
-
-    # amstelhaege.random_hillclimber()
-    amstelhaege.semirandom_hillclimber()
-
-    amstelhaege.value()
-    finalvalue = amstelhaege.total_value
-    print("eindwaarde: ", amstelhaege.usd(finalvalue))
-    print(amstelhaege.all_woningen)
-    amstelhaege.plot_houses()
+        amstelhaege.value()
+        startvalue = amstelhaege.total_value
+        print("startwaarde: ", amstelhaege.usd(startvalue))
+        random_eindtijd = time.time()
+        runtimes_random.append(random_eindtijd - random_begintijd)
 
 
-    # for c in amstelhaege.all_woningen:
-    #     print()
-    #     print("id:", c.coordinate[0])
-    #     print("x:", c.coordinate[1])
-    #     print("y:", c.coordinate[2])
-    #     print()
+        # amstelhaege.water()
+
+        hillclimber_begintijd = time.time()
+        amstelhaege.random_hillclimber()
+
+        amstelhaege.value()
+        finalvalue = amstelhaege.total_value
+        print("eindwaarde: ", amstelhaege.usd(finalvalue))
+        hillclimber_eindtijd = time.time()
+
+        amstelhaege.semirandom_hillclimber()
+        amstelhaege.value()
+        semivalue = amstelhaege.total_value
+        semirandom_hillclimber.append(semivalue)
+
+        # amstelhaege.plot_houses()
+
+        # plt.show()
+
+        random.append(startvalue)
+        hillclimber.append(finalvalue)
+        runtimes_hillclimber.append(hillclimber_eindtijd - hillclimber_begintijd)
+        print(f"NOG {100 - i} KEER!!!")
+
+    mean_runtime_random = stat.mean(runtimes_random)
+    mean_runtime_hillclimber = stat.mean(runtimes_hillclimber)
+
+    print(mean_runtime_random)
+    print(mean_runtime_hillclimber)
+
+    bins = len(random)-2
+    plot1 = plt.hist(hillclimber, bins=bins, stacked=True, label="Hillclimber")
+    plot2 = plt.hist(random, bins=bins, stacked=True, label="Random")
+    plot3 = plt.hist(semirandom_hillclimber, bins=bins, stacked=True, label="Semi-random hillclimber")
 
     plt.show()
 
