@@ -24,7 +24,7 @@ De lower bound van de plattegrond is de minimale waarde die de plattegrond kan h
 
 ## State space
 
-De state space is een theoretische set van alle mogelijke indelingen van de wijk. In deze benadering kunnen ook huizen op elkaar worden gezet. De state space wordt berekend aan de hand van de mogelijke combinaties en de aantallen van de huizen. Voor de 20-huizenvariant is deze bij benadering (48000^12 * 45000^5 * 43000^3) = 3^79.
+De state space is een theoretische set van alle mogelijke indelingen van de wijk. In deze benadering kunnen ook huizen op elkaar worden gezet. De state space wordt berekend aan de hand van de mogelijke combinaties en de aantallen van de huizen. Voor de 20-huizenvariant is deze bij benadering (48000^12 * 45000^5 * 43000^3) = 3E79.
 
 
 ## Algo's
@@ -36,3 +36,6 @@ De algoritmes voor deze case zijn: randomized, hill climber en simulated anneali
 Het programma is geschreven in python 3.7.0 in Atom(1.32.1). Het programma runt hierdoor alleen bij gebruik van python 3.7.0 of hoger.
 
 ### Acknowledgement
+
+
+![(https://github.com/mariadaan/Wilco/blob/master/figuren/20%2C%20100%2C%2010000.png)]
