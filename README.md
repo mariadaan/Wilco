@@ -42,25 +42,22 @@ Het programma is geschreven in python 3.7.0 in Atom(1.32.1). Het programma runt 
 
 ![blah](https://github.com/mariadaan/Wilco/blob/master/figuren/20%2C%20200%2C%201000.png)
 
-Blauw = random
+Op bovenstaand histogram is te zien hoe onze algoritmes presteren als we het programma 200 keer herhalen en de hillclimber 1000 stappen laten zetten. De waardes horen bij de 20-huizenvariant. Blauw hoort bij random, groen bij onze volledig random hillclimber en rood bij onze semi-random hillclimber. Bij de semi-random hillclimber verplaatsen we het huis met de minste vrijstand.
 
-Groen = volledig random hillclimber
+#### Bijbehorende statistische cijfers
 
-Rood = semi-random hillclimber (huis met minste vrijstand verplaatsen)
+Gemiddelde waarde random:                  			€10,010,029.50
 
+Gemiddelde waarde hillclimber:             			€14,513,262.90
 
-gemiddelde waarde random:                  			€10,010,029.50
-
-gemiddelde waarde hillclimber:             			€14,513,262.90
-
-gemiddelde waarde semirandom hillclimber:  	    €14,783,520.75
+Gemiddelde waarde semirandom hillclimber:  	    €14,783,520.75
 
 
-standaardafwijking random:                			€541,923.01
+Standaardafwijking random:                			€541,923.01
 
-standaardafwijking hillclimber:            			€513,024.55
+Standaardafwijking hillclimber:            			€513,024.55
 
-standaardafwijking semirandom hillclimber: 		  €554,368.70
+Standaardafwijking semirandom hillclimber: 		  €554,368.70
 
 #### Wat maken we hieruit op?
 
