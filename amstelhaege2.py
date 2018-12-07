@@ -352,10 +352,12 @@ if __name__ == "__main__":
     elif huizenvariant == 60:
         lowerbound = 25200000
 
+    formervalue = amstelhaege.total_value
+
     for i in range(10):
         print(i+1)
         startvalue = 0
-        formervalue = amstelhaege.total_value
+        print("formervalue", formervalue)
         # pas beginnen met hillclimber als goede random startkaart is gevonden
         while startvalue < lowerbound:
             amstelhaege.all_woningen = []
@@ -378,6 +380,7 @@ if __name__ == "__main__":
         results.append(finalvalue)
 
         if finalvalue > formervalue:
+            formervalue = finalvalue
             best_map = amstelhaege.all_woningen
 
 
@@ -387,7 +390,7 @@ if __name__ == "__main__":
     print("hoogst gevonden waarde: ", amstelhaege.usd(max(results)))
 
     amstelhaege.plot_houses(best_map)
-    print("waarde best map: ", amstelhaege.usd(amstelhaege.value(best_map)))
+    print("waarde best map:        ", amstelhaege.usd(amstelhaege.value(best_map)))
     # bins = len(results)-2
     # plot3 = plt.hist(results, bins=bins, stacked=True, label="Semi-random hillclimber", color="r")
     # plt.xlabel('Waarde van de kaart -->')
