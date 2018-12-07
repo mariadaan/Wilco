@@ -40,7 +40,7 @@ Het programma is geschreven in python 3.7.0 in Atom(1.32.1). Het programma runt 
 #### Histogram
 
 
-![blah](https://github.com/mariadaan/Wilco/blob/master/figuren/20%2C%20100%2C%2010000.png)
+![blah](https://github.com/mariadaan/Wilco/blob/master/figuren/20%2C%20200%2C%201000.png)
 
 - uitleg
 - gemiddelde
