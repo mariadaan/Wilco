@@ -178,7 +178,7 @@ class Amstelhaege():
 
 
     def random_hillclimber(self):
-        for i in range(10000):
+        for i in range(1000):
             value1 = self.value()
             random_house_index = rd.randrange(0, 19)
             random_house_id = self.all_woningen[random_house_index].coordinate[0]
@@ -195,7 +195,7 @@ class Amstelhaege():
 
 
     def semirandom_hillclimber(self):
-        for i in range(10000):
+        for i in range(1000):
             value1 = self.value()
             random_house_index = self.meters.index(min(self.meters))
             random_house_id = self.all_woningen[random_house_index].coordinate[0]
@@ -336,22 +336,19 @@ class Amstelhaege():
 
     def usd(self, value):
         """Format value as USD."""
-        return f"${value:,.2f}"
+        return f"€{value:,.2f}"
 
 if __name__ == "__main__":
 
     hillclimber = []
     random = []
     semirandom_hillclimber = []
-    runtimes_random = []
-    runtimes_hillclimber = []
-    runtimes_semirandom = []
 
-    for i in range(10):
-        random_begintijd = time.time()
+    for i in range(200):
+        print(i+1)
         amstelhaege = Amstelhaege()
 
-        huizenvariant = 60
+        huizenvariant = 20
 
         eengezins = int(huizenvariant * 0.6)
         bungalow = int(huizenvariant * 0.25)
@@ -369,25 +366,19 @@ if __name__ == "__main__":
 
         amstelhaege.value()
         startvalue = amstelhaege.total_value
-        print("startwaarde: ", amstelhaege.usd(startvalue))
-        random_eindtijd = time.time()
-        runtimes_random.append(random_eindtijd - random_begintijd)
-
+        print("randomwaarde: ", amstelhaege.usd(startvalue))
 
         # amstelhaege.water()
 
-        hillclimber_begintijd = time.time()
         amstelhaege.random_hillclimber()
-
         amstelhaege.value()
         finalvalue = amstelhaege.total_value
-        print("eindwaarde: ", amstelhaege.usd(finalvalue))
-        hillclimber_eindtijd = time.time()
+        print("hillclimberwaarde: ", amstelhaege.usd(finalvalue))
 
         amstelhaege.semirandom_hillclimber()
         amstelhaege.value()
         semivalue = amstelhaege.total_value
-        semirandom_hillclimber.append(semivalue)
+        print("semirandomwaarde: ", amstelhaege.usd(semivalue))
 
         # amstelhaege.plot_houses()
 
@@ -395,19 +386,25 @@ if __name__ == "__main__":
 
         random.append(startvalue)
         hillclimber.append(finalvalue)
-        runtimes_hillclimber.append(hillclimber_eindtijd - hillclimber_begintijd)
-        print(f"NOG {100 - i} KEER!!!")
+        semirandom_hillclimber.append(semivalue)
 
-    mean_runtime_random = stat.mean(runtimes_random)
-    mean_runtime_hillclimber = stat.mean(runtimes_hillclimber)
 
-    print(mean_runtime_random)
-    print(mean_runtime_hillclimber)
+    print("gemiddelde waarde random:                 ", amstelhaege.usd(stat.mean(random)))
+    print("gemiddelde waarde hillclimber:            ", amstelhaege.usd(stat.mean(hillclimber)))
+    print("gemiddelde waarde semirandom hillclimber: ", amstelhaege.usd(stat.mean(semirandom_hillclimber)))
+    print()
+    print("standaardafwijking random:                ", amstelhaege.usd(stat.stdev(random)))
+    print("standaardafwijking hillclimber:           ", amstelhaege.usd(stat.stdev(hillclimber)))
+    print("standaardafwijking semirandom hillclimber:", amstelhaege.usd(stat.stdev(semirandom_hillclimber)))
+
+    plt.xlabel('Waarde van de kaart -->')
+    plt.ylabel('Hoevaak komt waarde voor -->')
+
 
     bins = len(random)-2
-    plot1 = plt.hist(hillclimber, bins=bins, stacked=True, label="Hillclimber")
-    plot2 = plt.hist(random, bins=bins, stacked=True, label="Random")
-    plot3 = plt.hist(semirandom_hillclimber, bins=bins, stacked=True, label="Semi-random hillclimber")
+    plot1 = plt.hist(random, bins=bins, stacked=True, label="Random", color="b")
+    plot2 = plt.hist(hillclimber, bins=bins, stacked=True, label="Hillclimber", color="g")
+    plot3 = plt.hist(semirandom_hillclimber, bins=bins, stacked=True, label="Semi-random hillclimber", color="r")
 
     plt.show()
 
