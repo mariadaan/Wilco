@@ -37,5 +37,15 @@ Het programma is geschreven in python 3.7.0 in Atom(1.32.1). Het programma runt 
 
 ### Acknowledgement
 
+#### Histogram
+
 
 ![blah](https://github.com/mariadaan/Wilco/blob/master/figuren/20%2C%20100%2C%2010000.png)
+
+- uitleg
+- gemiddelde
+- kleur bij algo
+- stdev
+- max / min waarde
+
+#### Plattegrond
