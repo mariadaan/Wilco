@@ -46,7 +46,7 @@ Blauw = random
 
 Groen = volledig random hillclimber
 
-Blauw = semi-random hillclimber (huis met minste vrijstand verplaatsen)
+Rood = semi-random hillclimber (huis met minste vrijstand verplaatsen)
 
 
 gemiddelde waarde random:                  			€10,010,029.50
@@ -61,6 +61,10 @@ standaardafwijking random:                			€541,923.01
 standaardafwijking hillclimber:            			€513,024.55
 
 standaardafwijking semirandom hillclimber: 		  €554,368.70
+
+#### Wat maken we hieruit op?
+
+De gemiddelde waarde ligt bij de semi-random hillclimber meer dan €200,000.00 hoger dan bij de volledig random hillclimber. De standaardafwijking is echter ook groter, wat aantoont dat deze minder voorspelbaar is. De standaardafwijking is bij de semi-random hillclimber zelfs groter dan bij de random kaartenmaker. Ook wordt het verschil in gemiddelde waarde steeds kleiner naarmate we de hillclimber meer stappen laten zetten. Om deze reden kiezen we ervoor om met de volledig random hillclimber door te gaan.  
 
 
 
