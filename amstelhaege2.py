@@ -178,7 +178,7 @@ class Amstelhaege():
 
 
     def random_hillclimber(self):
-        for i in range(10000):
+        for i in range(1000):
             value1 = self.value(self.all_woningen)
             random_house_index = rd.randrange(0, 19)
             random_house_id = self.all_woningen[random_house_index].coordinate[0]
@@ -195,7 +195,7 @@ class Amstelhaege():
 
 
     def semirandom_hillclimber(self):
-        for i in range(100):
+        for i in range(1000):
             value1 = self.value(self.all_woningen)
             random_house_index = self.meters.index(min(self.meters))
             random_house_id = self.all_woningen[random_house_index].coordinate[0]
@@ -354,7 +354,7 @@ if __name__ == "__main__":
 
     formervalue = amstelhaege.total_value
 
-    for i in range(10):
+    for i in range(5):
         print(i+1)
         startvalue = 0
         print("formervalue", formervalue)
@@ -391,10 +391,7 @@ if __name__ == "__main__":
 
     amstelhaege.plot_houses(best_map)
     print("waarde best map:        ", amstelhaege.usd(amstelhaege.value(best_map)))
-    # bins = len(results)-2
-    # plot3 = plt.hist(results, bins=bins, stacked=True, label="Semi-random hillclimber", color="r")
-    # plt.xlabel('Waarde van de kaart -->')
-    # plt.ylabel('Hoevaak komt waarde voor -->')
+
 
     plt.show()
 
