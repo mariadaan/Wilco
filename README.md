@@ -61,7 +61,7 @@ Standaardafwijking semirandom hillclimber: 		  €554,368.70
 
 #### Wat maken we hieruit op?
 
-De gemiddelde waarde ligt bij de semi-random hillclimber meer dan €200,000.00 hoger dan bij de volledig random hillclimber. De standaardafwijking is echter ook groter, wat aantoont dat deze minder voorspelbaar is. De standaardafwijking is bij de semi-random hillclimber zelfs groter dan bij de random kaartenmaker. Ook wordt het verschil in gemiddelde waarde steeds kleiner naarmate we de hillclimber meer stappen laten zetten. Om deze reden kiezen we ervoor om met de volledig random hillclimber door te gaan.  
+De gemiddelde waarde ligt bij de semi-random hillclimber meer dan €200,000.00 hoger dan bij de volledig random hillclimber. De standaardafwijking is echter ook groter, wat aantoont dat de semi-random hillclimber minder voorspelbaar is. De standaardafwijking is bij de semi-random hillclimber zelfs groter dan bij de random kaartenmaker. Het verschil in gemiddelde waarde tussen de hillclimber en de semi-random hillclimber wordt steeds kleiner naarmate we de hillclimber meer stappen laten zetten. Om deze reden kiezen we ervoor om met de beter betrouwbare volledig random hillclimber door te gaan.  
 
 
 
