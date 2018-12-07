@@ -67,3 +67,7 @@ De gemiddelde waarde ligt bij de semi-random hillclimber meer dan €200,000.00 
 
 
 #### Plattegrond
+
+Zie hier een voorbeeld van hoe een redelijk goede 20-huizen kaart eruit ziet:
+
+![blah](https://github.com/mariadaan/Wilco/blob/master/figuren/20.png)
