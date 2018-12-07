@@ -43,17 +43,25 @@ Het programma is geschreven in python 3.7.0 in Atom(1.32.1). Het programma runt 
 ![blah](https://github.com/mariadaan/Wilco/blob/master/figuren/20%2C%20200%2C%201000.png)
 
 Blauw = random
+
 Groen = volledig random hillclimber
+
 Blauw = semi-random hillclimber (huis met minste vrijstand verplaatsen)
 
 
 gemiddelde waarde random:                  			€10,010,029.50
+
 gemiddelde waarde hillclimber:             			€14,513,262.90
+
 gemiddelde waarde semirandom hillclimber:  	    €14,783,520.75
 
+
 standaardafwijking random:                			€541,923.01
+
 standaardafwijking hillclimber:            			€513,024.55
+
 standaardafwijking semirandom hillclimber: 		  €554,368.70
+
 
 
 
