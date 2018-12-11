@@ -264,26 +264,26 @@ class Amstelhaege():
                 y_upper2 = int(housee.coordinate[2] + bre2)
 
                 # loodrechte afstanden: huizen liggen boven elkaar
-                if x_left2 in range(x_left, x_right) or x_right2 in range(x_left, x_right):
+                if x_left2 in range(x_left, x_right + 1) or x_right2 in range(x_left, x_right + 1):
                     if x_left == x_left2 and y_lower == y_lower2:
                         # zelfde huis, niet met zichzelf vergelijken
                         pass
-                    elif y_lower > y_upper2:
+                    elif y_lower >= y_upper2:
                         # huis 1 ligt boven huis 2
                         afstanden.append(y_min - y_upper2)
-                    elif y_upper < y_lower2:
+                    elif y_upper <= y_lower2:
                         # huis 1 ligt onder huis 2
                         afstanden.append(y_lower2 - y_max)
 
                 # loodrechte afstanden: huizen liggen naast elkaar
-                if y_lower2 in range(y_lower, y_upper) or y_upper2 in range(y_lower, y_upper):
+                if y_lower2 in range(y_lower, y_upper + 1) or y_upper2 in range(y_lower, y_upper + 1):
                     if x_left == x_left2 and y_lower == y_lower2:
                         # zelfde huis, niet met zichzelf vergelijken
                         pass
-                    elif x_min > x_right2:
+                    elif x_min >= x_right2:
                         # huis 1 ligt rechts van huis 2
                         afstanden.append(x_min - x_right2)
-                    elif x_right < x_left2:
+                    elif x_right <= x_left2:
                         # huis 1 ligt links van huis 2
                         afstanden.append(x_left2 - x_max)
 
@@ -321,12 +321,15 @@ class Amstelhaege():
             extrameters = int(min(afstanden) / 2)
             self.meters.append(extrameters)
             house_value = self.woningen[id - 1].prijs + (self.woningen[id - 1].prijs * extrameters * self.woningen[id - 1].waardestijging)
+            print(house.coordinate)
+            print("value: ", self.usd(house_value))
+            print("meter: ", extrameters)
             self.total_value += house_value
         return self.total_value
 
 
     def usd(self, value):
-        """Format value as USD."""
+        """Format value as EURO."""
         return f"€{value:,.2f}"
 
 if __name__ == "__main__":
@@ -336,7 +339,7 @@ if __name__ == "__main__":
     results = []
     best_map = amstelhaege.all_woningen
 
-    huizenvariant = 20
+    huizenvariant = 60
 
     eengezins = int(huizenvariant * 0.6)
     bungalow = int(huizenvariant * 0.25)
@@ -354,7 +357,7 @@ if __name__ == "__main__":
 
     formervalue = amstelhaege.total_value
 
-    for i in range(5):
+    for i in range(2):
         print(i+1)
         startvalue = 0
         print("formervalue", formervalue)

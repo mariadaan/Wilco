@@ -15,7 +15,7 @@ De vrijstand van een woning is de kleinste afstand tot de dichstbijzijnde andere
 
 ## Upper bound
 
-De upperbound wordt berekend aan de hand van de overgebleven oppervlakte na het plaatsen van alle huizen. De overgebleven vrijstand is in het meest optimistische geval allemaal extra vrijstand voor de woning met de hoogste waardestijging per extra meter vrijstand, in dit geval de villa. Bij de 20-huizenvariant zal de upperbound een waarde hebben van: €36.000.000
+De upperbound wordt berekend aan de hand van de overgebleven oppervlakte na het plaatsen van alle huizen. De overgebleven vrijstand is in het meest optimistische geval allemaal extra vrijstand voor de woning met de hoogste waardestijging per extra meter vrijstand, in dit geval de villa. Bij de 20-, 40- en 60-huizenvariant zal de upperbound respectievelijk een waarde hebben van: €36.500.000, €37.000.000 en €37.400.000
 
 
 ## Lower bound
@@ -24,7 +24,7 @@ De lower bound van de plattegrond is de minimale waarde die de plattegrond kan h
 
 ## State space
 
-De state space is een theoretische set van alle mogelijke indelingen van de wijk. In deze benadering kunnen ook huizen op elkaar worden gezet. De state space wordt berekend aan de hand van de mogelijke combinaties en de aantallen van de huizen. Voor de 20-huizenvariant is deze bij benadering (48000^12 * 45000^5 * 43000^3) = 3E79.
+De state space is een theoretische set van alle mogelijke indelingen van de wijk. In deze benadering kunnen ook huizen op elkaar worden gezet. De state space wordt berekend aan de hand van de mogelijke combinaties en de aantallen van de huizen. Voor de 20-huizenvariant is deze bij benadering (48000^12 * 45000^5 * 43000^3) = 3E79. Voor de 40-huizenvariant zal dit bij benadering (48000^24 * 45000^10 * 43000^6) = 5E186 zijn. Voor de 60-huizenvariant zal dit bij benadering (48000^36 * 45000^15 * 43000^9) = 1E280 zijn.
 
 
 ## Algo's
@@ -71,3 +71,7 @@ De gemiddelde waarde ligt bij de semi-random hillclimber meer dan €200,000.00 
 Zie hier een voorbeeld van hoe een redelijk goede 20-huizen kaart eruit ziet:
 
 ![blah](https://github.com/mariadaan/Wilco/blob/master/figuren/20.png)
+
+
+
+#### Plattegrond
