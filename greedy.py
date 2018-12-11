@@ -12,8 +12,8 @@ import statistics as stat
 import math
 import time
 
-GRID_LEN = 321 #x
-GRID_BRE = 361 #y
+GRID_LEN = 320 #x
+GRID_BRE = 360 #y
 
 
 class Amstelhaege():
@@ -28,6 +28,7 @@ class Amstelhaege():
         self.width = GRID_LEN
         self.height = GRID_BRE
         self.meters = []
+        self.best_map = []
 
     def load_woningen(self, filename):
         with open(filename, "r") as f:
@@ -123,15 +124,15 @@ class Amstelhaege():
                 if huh == 0:
                     checker += 1
 
-        self.build_house(id, x_random, y_random, new_len, new_bre, new_vrij)
+        self.build_house(id, x_random, y_random)
 
-    def build_house(self, id, x_random, y_random, new_len, new_bre, new_vrij):
+    def build_house(self, id, x_random, y_random):
         self.all_woningen.append(Coordinate())
         self.all_woningen[-1].add(id, x_random, y_random)
         self.count += 1
 
 
-    def plot_houses(self):
+    def plot_houses(self, map):
         # make grid
         x = np.arange(0, GRID_LEN)
         y = np.arange(0, GRID_BRE)
@@ -140,7 +141,7 @@ class Amstelhaege():
         plt.xlim(0, GRID_LEN)
         plt.ylim(0, GRID_BRE)
 
-        for woning in self.all_woningen:
+        for woning in map:
             id = woning.coordinate[0]
             x_random = woning.coordinate[1]
             y_random = woning.coordinate[2]
@@ -179,12 +180,12 @@ class Amstelhaege():
 
     def random_hillclimber(self):
         for i in range(100):
-            value1 = self.value()
+            value1 = self.value(self.all_woningen)
             random_house_index = rd.randrange(0, 19)
             random_house_id = self.all_woningen[random_house_index].coordinate[0]
             deleted = self.all_woningen.pop(random_house_index)
             self.check_and_place(random_house_id)
-            value2 = self.value()
+            value2 = self.value(self.all_woningen)
 
             if value2 <= value1:
                 # print("niet geaccepteerd: ", self.usd(value2))
@@ -195,13 +196,13 @@ class Amstelhaege():
 
 
     def semirandom_hillclimber(self):
-        for i in range(100):
-            value1 = self.value()
+        for i in range(10000):
+            value1 = self.value(self.all_woningen)
             random_house_index = self.meters.index(min(self.meters))
             random_house_id = self.all_woningen[random_house_index].coordinate[0]
             deleted = self.all_woningen.pop(random_house_index)
             self.check_and_place(random_house_id)
-            value2 = self.value()
+            value2 = self.value(self.all_woningen)
 
             if value2 <= value1:
                 # print("niet geaccepteerd: ", self.usd(value2))
@@ -214,13 +215,13 @@ class Amstelhaege():
                 # plt.pause(0.01)
 
 
-    def value(self):
+    def value(self, map):
 
         # huis 1
         self.total_value = 0
         self.meters = []
 
-        for house in self.all_woningen:
+        for house in map:
             # eigenschappen huis 1
             id = house.coordinate[0]
             vrij = self.woningen[id - 1].minvrijstand * 2
@@ -250,7 +251,7 @@ class Amstelhaege():
             # afstanden.append(GRID_BRE - y_max)
 
             # huis 2
-            for housee in self.all_woningen:
+            for housee in map:
                 # eigenschappen huis 2
                 id2 = housee.coordinate[0]
                 vrij2 = self.woningen[id2 - 1].minvrijstand * 2
@@ -319,17 +320,11 @@ class Amstelhaege():
 
 
             extrameters = int(min(afstanden) / 2)
-            if extrameters < 0:
-                print("huis 1: ")
-                print(id)
-                print(x_left)
-                print(y_lower)
-                print("huis 2: ")
-                print(id2)
-                print(x_left2)
-                print(y_lower2)
             self.meters.append(extrameters)
             house_value = self.woningen[id - 1].prijs + (self.woningen[id - 1].prijs * extrameters * self.woningen[id - 1].waardestijging)
+            print(house.coordinate)
+            print("value: ", self.usd(house_value))
+            print("meter: ", extrameters)
             self.total_value += house_value
         return self.total_value
 
@@ -339,24 +334,31 @@ class Amstelhaege():
         return f"€{value:,.2f}"
 
 if __name__ == "__main__":
+    random_begintijd = time.time()
+    amstelhaege = Amstelhaege()
 
-    hillclimber = []
-    random = []
-    semirandom_hillclimber = []
+    results = []
 
-    for i in range(50):
+    huizenvariant = 20
+
+    eengezins = int(huizenvariant * 0.6)
+    bungalow = int(huizenvariant * 0.25)
+    villa = int(huizenvariant * 0.15)
+
+    formervalue = amstelhaege.total_value
+
+    for i in range(5):
         print(i+1)
-        amstelhaege = Amstelhaege()
+        startvalue = 0
+        print("formervalue", formervalue)
 
-        huizenvariant = 20
+        amstelhaege.all_woningen = []
 
-        eengezins = int(huizenvariant * 0.6)
-        bungalow = int(huizenvariant * 0.25)
-        villa = int(huizenvariant * 0.15)
-        # water = 4
+        # villa's bouwen in de hoeken
+        amstelhaege.build_house(3, 12, 327)
+        amstelhaege.build_house(3, 286, 327)
+        amstelhaege.build_house(3, 286, 12)
 
-        for j in range(villa):
-            amstelhaege.check_and_place(3)
         for j in range(bungalow):
             amstelhaege.check_and_place(2)
         for j in range(eengezins):
@@ -364,47 +366,31 @@ if __name__ == "__main__":
         # for i in range(water):
         #     amstelhaege.check_and_place(4)
 
-        amstelhaege.value()
-        startvalue = amstelhaege.total_value
-        print("randomwaarde: ", amstelhaege.usd(startvalue))
+            amstelhaege.value(amstelhaege.all_woningen)
+            startvalue = amstelhaege.total_value
 
-        # amstelhaege.water()
-
+        print("startwaarde: ", amstelhaege.usd(startvalue))
         amstelhaege.random_hillclimber()
-        amstelhaege.value()
-        finalvalue = amstelhaege.total_value
-        print("hillclimberwaarde: ", amstelhaege.usd(finalvalue))
+        finalvalue = amstelhaege.value(amstelhaege.all_woningen)
+        print("eindwaarde: ", amstelhaege.usd(finalvalue))
+        results.append(finalvalue)
 
-        amstelhaege.semirandom_hillclimber()
-        amstelhaege.value()
-        semivalue = amstelhaege.total_value
-        print("semirandomwaarde: ", amstelhaege.usd(semivalue))
-
-        # amstelhaege.plot_houses()
-
-        # plt.show()
-
-        random.append(startvalue)
-        hillclimber.append(finalvalue)
-        semirandom_hillclimber.append(semivalue)
+        if finalvalue > formervalue:
+            formervalue = finalvalue
+            amstelhaege.best_map = amstelhaege.all_woningen
 
 
-    print("gemiddelde waarde random:                 ", amstelhaege.usd(stat.mean(random)))
-    print("gemiddelde waarde hillclimber:            ", amstelhaege.usd(stat.mean(hillclimber)))
-    print("gemiddelde waarde semirandom hillclimber: ", amstelhaege.usd(stat.mean(semirandom_hillclimber)))
+    # print("gemiddelde waarde: ", amstelhaege.usd(stat.mean(results)))
+    # print("standaardafwijking: ", amstelhaege.usd(stat.stdev(results)))
+    print("laagst gevonden waarde: ", amstelhaege.usd(min(results)))
+    print("hoogst gevonden waarde: ", amstelhaege.usd(max(results)))
+
+    amstelhaege.plot_houses(amstelhaege.best_map)
+
     print()
-    print("standaardafwijking random:                ", amstelhaege.usd(stat.stdev(random)))
-    print("standaardafwijking hillclimber:           ", amstelhaege.usd(stat.stdev(hillclimber)))
-    print("standaardafwijking semirandom hillclimber:", amstelhaege.usd(stat.stdev(semirandom_hillclimber)))
-
-    plt.xlabel('Waarde van de kaart -->')
-    plt.ylabel('Hoevaak komt waarde voor -->')
-
-
-    bins = len(random)-2
-    plot1 = plt.hist(random, bins=bins, stacked=True, label="Random", color="b")
-    plot2 = plt.hist(hillclimber, bins=bins, stacked=True, label="Hillclimber", color="g")
-    plot3 = plt.hist(semirandom_hillclimber, bins=bins, stacked=True, label="Semi-random hillclimber", color="r")
+    print()
+    print("HIER BEGINT HET!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+    print("waarde best map:        ", amstelhaege.usd(amstelhaege.value(amstelhaege.best_map)))
 
     plt.show()
 
