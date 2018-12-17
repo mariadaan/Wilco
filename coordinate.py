@@ -1,12 +1,9 @@
 class Coordinate(object):
     """
-    X en Y coordinaat van Woning
+    X and Y coordinate of a house on a map
     """
 
     def __init__(self):
-        """
-        Lijst van x en y coordinaten
-        """
         self.coordinate = []
 
     def add(self, id, x_random, y_random):

@@ -1,8 +1,6 @@
 # Amstelhaege
 
-Ad Ruigrok van der Werve,
-Milou van Casteren,
-Maria Daan
+Door Ad Ruigrok van der Werve, Milou van Casteren en Maria Daan
 
 ## Case
 
@@ -27,15 +25,21 @@ De lower bound van de plattegrond is de minimale waarde die de plattegrond kan h
 De state space is een theoretische set van alle mogelijke indelingen van de wijk. In deze benadering kunnen ook huizen op elkaar worden gezet. De state space wordt berekend aan de hand van de mogelijke combinaties en de aantallen van de huizen. Voor de 20-huizenvariant is deze bij benadering (48000^12 * 45000^5 * 43000^3) = 3E79. Voor de 40-huizenvariant zal dit bij benadering (48000^24 * 45000^10 * 43000^6) = 5E186 zijn. Voor de 60-huizenvariant zal dit bij benadering (48000^36 * 45000^15 * 43000^9) = 1E280 zijn.
 
 
-## Algo's
+## Algoritmes
 
-De algoritmes voor deze case zijn: randomized, hill climber en simulated annealing.
+Er worden drie algoritmes gebruikt om de kaart in te delen. De eerste is een random hillclimber. Hierbij wordt eerst een volledig random kaart gemaakt. Het water wordt hierbij als 1 plas geplaatst met vaste afmetingen, wel op een random plek. Vervolgens worden telkens random huizen verplaatst als dit een waardestijging oplevert. Het water wordt niet meer verplaatst.
+
+Het tweede algoritme noemen we de semi-random hillclimber. Dit algoritme komt voor een groot deel overeen met de random hillclimber, alleen wordt er nu niet telkens een random woning gekozen, maar de woning met de minste vrijstand. Deze wonging wordt vervolgens wel naar een random plek verplaatst.
+
+Het laatste algortme is greedy. Deze is eigenlijk semi-greedy en semi-random, er wordt namelijk nog steeds veel random geplaatst en ge-hillclimbed. De villa's worden echter wel greedy geplaatst: in de hoeken. Omdat we de randen van de kaart niet als einde van de vrijstand zien, zijn dit gunstige plaatsen om de villa's veel vrijstand en dus waarde te geven. Ook het water wordt op een vaste locatie geplaatst: aan de zijkant van de kaart. Na het random plaatsen van de rest van de huizen, wordt hierop de random hillclimber uitgevoerd. Deze combinatie heeft geleid tot de hoogste resultaten.
+
+## Gebruik
+
+Bij het runnen van amstelhaege.py wordt vanzelf duidelijk hoe er met het programma omgegaan moet worden. De gebruiker bepaalt welk algoritme er gebruikt gaat worden, welke huizenvariant, hoeveel stappen de hillclimber moet zetten en hoe vaak het hele programma zich moet herhalen. Om de resultaten te vergelijken kan er een histogram geprint worden, maar je kan ook kiezen voor het tonen van de beste kaart. De bestanden coordinate.py en house.py representeren beide een huis. Bij coordinate.py gaat dit om een uniek huis, met x en y coordinaten. Bij house.py gaat dit om een type huis met alle eigenschappen erbij. Ook het water wordt gezien als een House object. In housetypes.txt worden deze types gedefineerd om ingeladen te kunnen worden in de housetype objects. Ten slotte is er nog make_histogram.py, wat een verouderde versie is die gebruikt kon worden om de algoritmes met elkaar te vergelijken en alle resultaten in één histogram te tonen.
 
 ## Vereisten
 
-Het programma is geschreven in python 3.7.0 in Atom(1.32.1). Het programma runt hierdoor alleen bij gebruik van python 3.7.0 of hoger.
-
-### Acknowledgement
+Het programma is geschreven in python 3.7.0 in Atom(1.32.1). Het programma runt hierdoor alleen bij gebruik van Python 3.7.0 of hoger.
 
 #### Histogram
 
@@ -64,14 +68,8 @@ Standaardafwijking semirandom hillclimber: 		  €554,368.70
 De gemiddelde waarde ligt bij de semi-random hillclimber meer dan €200,000.00 hoger dan bij de volledig random hillclimber. De standaardafwijking is echter ook groter, wat aantoont dat de semi-random hillclimber minder voorspelbaar is. De standaardafwijking is bij de semi-random hillclimber zelfs groter dan bij de random kaartenmaker. Het verschil in gemiddelde waarde tussen de hillclimber en de semi-random hillclimber wordt steeds kleiner naarmate we de hillclimber meer stappen laten zetten. Om deze reden kiezen we ervoor om met de beter betrouwbare volledig random hillclimber door te gaan.  
 
 
-
-
 #### Plattegrond
 
 Zie hier een voorbeeld van hoe een redelijk goede 20-huizen kaart eruit ziet:
 
 ![blah](https://github.com/mariadaan/Wilco/blob/master/figuren/20.png)
-
-
-
-#### Plattegrond
